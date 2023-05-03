@@ -1,3 +1,18 @@
+
+/**
+ * 난이도 조정 블록 범위
+ */
+export const DIFFICULTY_ADJUSTMENT_INTERVAL: number = 10;
+
+/**
+ * 블록 하나 생성 시간 10분
+ */
+export const BLOCK_GENERATION_INTERVAL: number = 10;
+/**
+ * 생성 시간의 단위
+ */
+export const BLOCK_GENERATION_TIME_UNIT: number = 60;
+
 export const GENESIS: IBlock = {
     version: "1.0.0",
     height: 0,
