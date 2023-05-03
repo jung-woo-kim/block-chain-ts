@@ -22,6 +22,10 @@ export class Block extends BlockHeader implements IBlock {
 
     }
 
+    public static generateBlock(_previousBlock: IBlock, _data: string[]) {
+        return new Block(_previousBlock,_data);
+    }
+
     public static getGENESIS(): Block {
         return GENESIS;
     }
