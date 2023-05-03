@@ -104,7 +104,6 @@ export class Block extends BlockHeader implements IBlock {
 
             if (result) {
                 _generated.hash = hash;
-                console.log(_generated);
                 return _generated;
             }
         }
