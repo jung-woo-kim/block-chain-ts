@@ -4,10 +4,6 @@ import * as console from "console";
 describe('Chain', () => {
     const node = new Chain();
 
-    it('getChan()',() => {
-        console.log(node.getChain());
-    })
-
     it('getLength()', () => {
         console.log(node.getLength());
     })
