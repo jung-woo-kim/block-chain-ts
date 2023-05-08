@@ -1,20 +1,28 @@
 {
-  "exclude": ["node_modules"],
   "compilerOptions": {
-    "outDir": "./build/",
+    "target": "es6",
+    "module": "commonjs",
+    "outDir": "./dist/",
     "esModuleInterop": true,
-    "moduleResolution": "Node",
+    "moduleResolution": "node",
     "resolveJsonModule": true,
     "strict": true,
-    "target": "ES6",
-    "removeComments": true,
-    "lib": ["ES6"],
-    "allowJs": true,
-    "typeRoots": ["./node_modules/@types","./@types"],
     "baseUrl": ".",
+    "typeRoots": [
+      "./node_modules/@types",
+      "./@types"
+    ],
     "paths": {
-      "@core/*": ["src/core/*"],
-      "*": ["@types/*"],
+      "@core/*": [
+        "/src/core/*"
+      ],
+      "*": [
+        "@types/*"
+      ]
     }
+  },
+  "ts-node": {
+    "esm": true,
+    "files": true
   }
 }

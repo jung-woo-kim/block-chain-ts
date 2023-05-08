@@ -1,4 +1,4 @@
-import {Chain} from "@core/blockchain/chain";
+import {Chain} from "./chain";
 import * as console from "console";
 
 describe('Chain', () => {

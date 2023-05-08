@@ -1,4 +1,4 @@
-import {Chain} from "@core/blockchain/chain";
+import {Chain} from "./chain";
 
 export class BlockChain {
     public chain: Chain;

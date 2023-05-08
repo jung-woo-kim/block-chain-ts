@@ -1,6 +1,7 @@
-import {Chain} from "@core/blockchain/chain";
+
 import WebSocket from "ws";
 import * as console from "console";
+import {Chain} from "../core/blockchain/chain";
 
 enum MessageType {
     latest_block = 0,
@@ -14,11 +15,16 @@ interface Message {
 }
 
 export class P2PServer extends Chain {
-    private sockets: WebSocket[];
+    private _sockets: WebSocket[];
 
     constructor() {
         super();
-        this.sockets = [];
+        this._sockets = [];
+    }
+
+
+    getSockets(): WebSocket[] {
+        return this._sockets;
     }
 
     /**
@@ -46,7 +52,7 @@ export class P2PServer extends Chain {
 
     private connectSocket(socket: WebSocket) {
         // 향후 브로드캐스팅 하기 위해 배열에 연결된 소켓 저장
-        this.sockets.push(socket);
+        this._sockets.push(socket);
         this.messageHandler(socket);
 
         const data: Message ={
@@ -140,12 +146,12 @@ export class P2PServer extends Chain {
     }
 
     broadcast(message: Message): void {
-        this.sockets.forEach((socket) => P2PServer.send(socket)(message));
+        this._sockets.forEach((socket) => P2PServer.send(socket)(message));
     }
 
     errorHandler(socket: WebSocket) {
         const  close = () => {
-            this.sockets.splice(this.sockets.indexOf(socket),1);
+            this._sockets.splice(this._sockets.indexOf(socket),1);
         }
         socket.on("close", close);
 

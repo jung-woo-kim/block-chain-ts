@@ -1,6 +1,6 @@
 
-import {Block} from "@core/blockchain/block";
-import {DIFFICULTY_ADJUSTMENT_INTERVAL, GENESIS} from "@core/config";
+import {Block} from "./block";
+import {DIFFICULTY_ADJUSTMENT_INTERVAL, GENESIS} from "../config";
 export class Chain {
     blockChain:Block[];
     constructor() {

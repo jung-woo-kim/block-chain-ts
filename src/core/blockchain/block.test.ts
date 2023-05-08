@@ -7,8 +7,7 @@ describe("Block 검증",() =>{
 
     it('블록 생성 ', function () {
         const data = ["Block #2"];
-        newBlock = Block.generateBlock(GENESIS,data);
-        console.log(newBlock);
+        newBlock = Block.getGENESIS();
     });
 
     it('블록 검증 테스트', () => {

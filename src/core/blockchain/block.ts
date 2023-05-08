@@ -1,13 +1,13 @@
 import {SHA256} from "crypto-js";
-import {BlockHeader} from "@core/blockchain/blockHeader";
 import merkle from "merkle";
 import {
     BLOCK_GENERATION_INTERVAL,
     BLOCK_GENERATION_TIME_UNIT,
     DIFFICULTY_ADJUSTMENT_INTERVAL,
     GENESIS
-} from "@core/config";
+} from "../config";
 import hexToBinary from "hex-to-binary";
+import {BlockHeader} from "./blockHeader";
 export class Block extends BlockHeader implements IBlock {
     data: string[];
     difficulty: number;
