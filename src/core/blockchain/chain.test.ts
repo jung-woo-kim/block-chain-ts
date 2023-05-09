@@ -13,7 +13,7 @@ describe('Chain', () => {
     })
 
     it('addBlock()', () => {
-        for (let i=1 ; i <= 30; i++) {
+        for (let i=1 ; i <= 100; i++) {
             node.addBlock([`Block #${i}`]);
         }
         console.log(node.getChain());

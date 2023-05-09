@@ -32,7 +32,7 @@ export class P2PServer extends Chain {
      */
     listen() {
         const server = new WebSocket.Server({ port:7545});
-
+        console.log("dsds");
         server.on("connection", (socket) => {
             this.connectSocket(socket);
         })
