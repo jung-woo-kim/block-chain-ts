@@ -32,27 +32,34 @@ export class P2PServer extends Chain {
      */
     listen() {
         const server = new WebSocket.Server({ port:7545});
-        console.log("dsds");
+        console.log("peer server port 7545 on");
         server.on("connection", (socket) => {
             this.connectSocket(socket);
         })
     }
 
     // listen() {
-    //     const server = new WebSocket.Server({ port:7546});
-    //     console.log("dsds");
-    //     server.on("connection", (socket) => {
-    //         this.connectSocket(socket);
-    //     })
-    // }
+    //         const server = new WebSocket.Server({ port:7546});
+    //         console.log("peer server port 7546 on");
+    //         server.on("connection", (socket) => {
+    //             this.connectSocket(socket);
+    //         })
+    //     }
 
     /**
      *
      * @param newPeer
      * url이 파라미터
      */
+
+    // 3000번 노트 (서버 노드) -> 127.0.0.1:7545
+    // 3001번 노드 (클라이언트 노드) -> 127.0.0.1:56499
+
+    // 3001번 노드 -> addToPeer
     connectToPeer(newPeer: string) {
+        // 127.0.0.1:7565 서버로 통신
         const socket = new WebSocket(newPeer);
+        // 소켓 포트 자동 판단
         socket.on("open",() => {
             this.connectSocket(socket);
         })
@@ -103,7 +110,14 @@ export class P2PServer extends Chain {
                         // ToDo : 받은 latest 블록을 체인에 추가할지 말지 결정
                         const [receivedBlock] = result.value.payload;
                         const isValid = this.addToChain(receivedBlock);
-                        if (!isValid.isError) break;
+                        if (!isValid.isError) {
+                            const message: Message = {
+                                type: MessageType.all_block,
+                                payload: [this.getLatestBlock()],
+                            };
+                            this.broadcast(message);
+                            break;
+                        }
 
                         send(message);
                         break;
