@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
-import {P2PServer} from "./server/p2p";
+import {P2PServer} from "./src/server/p2p";
+import {ReceivedTx,Wallet} from "./src/core/wallet/wallet";
 
 const app = express();
 const ws = new P2PServer();
@@ -59,6 +60,27 @@ app.get("/peers", (req, res) => {
     });
     res.json(sockets);
 });
+
+app.use((req,res,next) => {
+    const baseAuth = (req.headers.authorization || '').split(" ")[1];
+    if (baseAuth == '') return res.status(401).send();
+
+    const [userid, userpw] = Buffer.from(baseAuth, 'base64').toString().split(':');
+    if (userid !== 'web7722' || userpw !== '1234') return res.status(401).send();
+    next();
+})
+
+app.post('/sendTransaction', (req, res) => {
+
+    try {
+        const receivedTx:ReceivedTx = req.body;
+        Wallet.sendTransaction(receivedTx);
+    } catch (e) {
+        if (e instanceof  Error) console.log(e.message);
+    }
+    res.json({});
+
+})
 
 app.listen(3000, () => {
     console.log("server onload # port: 3000");
