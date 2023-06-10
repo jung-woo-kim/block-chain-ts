@@ -11,6 +11,7 @@ enum MessageType {
     latest_block = 0,
     all_block = 1,
     receivedChain = 2,
+    receivedTx = 3,
 }
 
 interface Message {
@@ -31,7 +32,7 @@ app.get("/chains", (req, res) => {
 app.post("/mineBlock", (req, res) => {
     const {data} = req.body;
     console.log(data);
-    const newBlock = ws.addBlock(data);
+    const newBlock = ws.miningBlock(data);
 
     if (newBlock.isError) {
         return res.status(500).send(newBlock.error);
@@ -74,13 +75,31 @@ app.post('/sendTransaction', (req, res) => {
 
     try {
         const receivedTx:ReceivedTx = req.body;
-        Wallet.sendTransaction(receivedTx);
+        const tx = Wallet.sendTransaction(receivedTx,ws.getUnspentTxOuts());
+
+        ws.appendTransactionPool(tx);
+
+        ws.updateUTXO(tx);
+
+        const message: Message = {
+            type: MessageType.receivedTx,
+            payload: tx,
+        };
+        ws.broadcast(message);
     } catch (e) {
         if (e instanceof  Error) console.log(e.message);
     }
     res.json({});
 
 })
+
+app.post('/getBalance', (req, res)=> {
+    const {account} = req.body;
+    const balance = Wallet.getBalance(account, ws.getUnspentTxOuts());
+    res.json({
+        balance,
+    });
+});
 
 app.listen(3000, () => {
     console.log("server onload # port: 3000");

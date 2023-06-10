@@ -18,7 +18,6 @@ export class TxIn implements ITxIn {
             const item: TxIn = new TxIn(txOutId, txOutIndex, receivedTx.signature);
             txins.push(item);
             sum += amount;
-            5;
             if (sum >= receivedTx.amount) return { sum, txins };
         }
         return { sum, txins };

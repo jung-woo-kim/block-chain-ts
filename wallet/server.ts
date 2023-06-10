@@ -39,11 +39,14 @@ app.post("/walletList",(req, res) => {
     res.json(Wallet.getWalletList());
 })
 
-app.get("/wallet/:account",(req, res) => {
+app.get("/wallet/:account",async (req, res) => {
     const { account } = req.params;
     console.log("wallet", account);
     const privateKey = Wallet.getWalletPrivateKey(account);
-    res.json(new Wallet(privateKey));
+    const wallet = new Wallet(privateKey);
+    const response = await request.post('/getBalance', {account});
+    wallet.balance = response.data.balance;
+    res.json(wallet);
 })
 
 app.post('/sendTransaction', async (req, res) => {

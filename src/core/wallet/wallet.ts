@@ -1,6 +1,7 @@
 import elliptic from "elliptic";
-import {randomBytes} from "crypto";
 import {SHA256} from "crypto-js";
+import {UnspentTxOut} from "../transaction/unspentTxOut";
+import {Transaction} from "../transaction/transaction";
 
 const ec = new elliptic.ec("secp256k1");
 
@@ -19,20 +20,23 @@ export class Wallet {
     public balance: number;
     public signature: Signature;
 
-    constructor(_sender: string, _signature:Signature) {
+    constructor(_sender: string, _signature:Signature, _unspentTxOuts: IUnspentTxOut[]) {
         this.publicKey = _sender;
         this.account = Wallet.getAccount(this.publicKey);
-        this.balance = 0;
+        this.balance = Wallet.getBalance(this.account,_unspentTxOuts);
         this.signature = _signature;
     }
 
-    static sendTransaction(_receivedTx: ReceivedTx) {
+    static sendTransaction(_receivedTx: ReceivedTx, _unspentTxOuts: IUnspentTxOut[]) {
         const verify = Wallet.getVerify(_receivedTx);
         if (verify.isError) throw new Error(verify.error);
 
-        const wallet = new this(_receivedTx.sender, _receivedTx.signature);
+        const wallet = new this(_receivedTx.sender, _receivedTx.signature, _unspentTxOuts);
 
         // TODO : Balance 확인 Transaction 만드는 과정
+        if (wallet.balance < _receivedTx.amount) throw new Error("잔약이 모자릅니다.");
+        const myUTXO = UnspentTxOut.getMyUnspentTxOuts(wallet.account,_unspentTxOuts);
+        return Transaction.createTransaction(_receivedTx, myUTXO);
     }
 
     static getAccount(_publicKey: string):string {

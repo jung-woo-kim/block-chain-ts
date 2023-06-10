@@ -7,6 +7,7 @@ enum MessageType {
     latest_block = 0,
     all_block = 1,
     receivedChain = 2,
+    receivedTx = 3,
 }
 
 interface Message {
@@ -129,6 +130,22 @@ export class P2PServer extends Chain {
                         // A 노드 상의 블록체인에서 생성된 최신 블록이
                         // B 노드 상의 블록체인에 추가되지 못한 상황이 발생했다는 것은 A 노드의 블록 체인을 교체해야함을 의미
                         this.handleChainResponse(receivedChain);
+                        break;
+                    }
+                    case MessageType.receivedTx: {
+                        const receivedTx = result.value.payload;
+                        const withTx = this.getTransactionPool().find((_tx: ITransaction) => {
+                            return _tx.hash === receivedTx.hash;
+                        })
+
+                        if (!withTx) {
+                            this.appendTransactionPool(receivedTx);
+                            const message: Message = {
+                                type: MessageType.receivedTx,
+                                payload: receivedTx,
+                            };
+                            this.broadcast(message);
+                        }
                         break;
                     }
                 }
