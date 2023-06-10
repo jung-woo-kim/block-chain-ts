@@ -9,14 +9,14 @@ import {
 import hexToBinary from "hex-to-binary";
 import {BlockHeader} from "./blockHeader";
 export class Block extends BlockHeader implements IBlock {
-    data: string[];
+    data: ITransaction[];
     difficulty: number;
     hash: string;
     merkleRoot: string;
     nonce: number;
 
 
-    constructor(_previousBlock: IBlock, _data: string[], _adjustmentBlock: Block) {
+    constructor(_previousBlock: IBlock, _data: ITransaction[], _adjustmentBlock: Block) {
         super(_previousBlock);
         this.merkleRoot = Block.getMerkleRoot(_data);
         this.hash = Block.createBlockHash(this);
@@ -82,7 +82,7 @@ export class Block extends BlockHeader implements IBlock {
 
     static generateBlock(
         _previousBlock: Block,
-        _data: string[],
+        _data: ITransaction[],
         _adjustmentBlock: Block,
     ) {
         const generated = new Block(_previousBlock, _data, _adjustmentBlock);

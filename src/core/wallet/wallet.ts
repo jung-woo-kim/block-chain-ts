@@ -50,4 +50,14 @@ export class Wallet {
         if (!isVerify) return { isError: true, error: "서명이 올바르지 않습니다."};
         return {isError: false, value: undefined};
     }
+
+    // 코인 보내는 사람의 잔액을 확인하기 위한 함수
+    static getBalance(account: string, unspentTxOuts: IUnspentTxOut[]): number {
+        return unspentTxOuts
+            .filter((v) => v.account === account)
+            .reduce((acc, utxo) => {
+                return acc + utxo.amount;
+            }, 0);
+        // 남아있는 잔액을 확인하고 확인한 잔액으로 보낼수 있는지 확인 하기 위해서
+    }
 }

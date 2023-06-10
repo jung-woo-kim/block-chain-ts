@@ -12,10 +12,12 @@ describe('Chain', () => {
         console.log(node.getLatestBlock());
     })
 
-    it('addBlock()', () => {
-        for (let i=1 ; i <= 100; i++) {
-            node.addBlock([`Block #${i}`]);
+    it('miningBlock()', () => {
+        for (let i=1 ; i <= 5; i++) {
+            node.miningBlock("1c4c604859ae9035247addc7cbf900fec9aa5f40");
         }
-        console.log(node.getChain());
+        console.log(node.getLatestBlock().data);
+        console.log(node.getUnspentTxOuts());
+
     })
 })
