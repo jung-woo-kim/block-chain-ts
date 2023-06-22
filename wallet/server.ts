@@ -71,5 +71,5 @@ app.post('/sendTransaction', async (req, res) => {
 })
 
 app.listen(3005,() => {
-    console.log("server onload #port: 3005");
+    console.log("Wallet server onload #port: 3005");
 })

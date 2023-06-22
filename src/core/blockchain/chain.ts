@@ -165,8 +165,6 @@ export class Chain {
     }
 
     updateUTXO(tx: ITransaction) {
-        // txOutId, txOutIndex, account, amount
-        // UTXO 배열을 가져오고 getUnspnetTxOuts 함수를 사용해서
         const unspentTxOuts: UnspentTxOut[] = this.getUnspentTxOuts();
         // UTXO에 추가할 unspentTxOuts 객체를 생성
         // 트랜잭션 객체의 배열안에 있는 txOut객체를 사용해서 새로 생성될

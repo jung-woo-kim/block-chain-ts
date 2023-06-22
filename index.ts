@@ -75,6 +75,7 @@ app.post('/sendTransaction', (req, res) => {
 
     try {
         const receivedTx:ReceivedTx = req.body;
+        console.log(req.body);
         const tx = Wallet.sendTransaction(receivedTx,ws.getUnspentTxOuts());
 
         ws.appendTransactionPool(tx);
@@ -102,11 +103,11 @@ app.post('/getBalance', (req, res)=> {
 });
 
 app.listen(3000, () => {
-    console.log("server onload # port: 3000");
+    console.log("p2p server onload # port: 3000");
     ws.listen();
 });
 
 // app.listen(3001, () => {
-//     console.log("server onload # port: 3001");
+//     console.log("p2p server onload # port: 3001");
 //     ws.listen();
 // });

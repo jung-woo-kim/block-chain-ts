@@ -33,7 +33,7 @@ export class P2PServer extends Chain {
      */
     listen() {
         const server = new WebSocket.Server({ port:7545});
-        console.log("peer server port 7545 on");
+        console.log("peer network port 7545 on");
         server.on("connection", (socket) => {
             this.connectSocket(socket);
         })
@@ -41,7 +41,7 @@ export class P2PServer extends Chain {
 
     // listen() {
     //         const server = new WebSocket.Server({ port:7546});
-    //         console.log("peer server port 7546 on");
+    //         console.log("peer network port 7546 on");
     //         server.on("connection", (socket) => {
     //             this.connectSocket(socket);
     //         })
